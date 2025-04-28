@@ -16,7 +16,7 @@ public class TelnyxClientUtil : ITelnyxClientUtil
     private readonly IHttpClientCache _httpClientCache;
     private readonly IConfiguration _configuration;
 
-    private const string _prodBaseUrl = "https://api.telnyx.com";
+    private const string _prodBaseUrl = "https://api.telnyx.com/v2/";
 
     public TelnyxClientUtil(IHttpClientCache httpClientCache, IConfiguration configuration)
     {
