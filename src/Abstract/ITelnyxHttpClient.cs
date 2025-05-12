@@ -8,7 +8,7 @@ namespace Soenneker.Telnyx.Client.Abstract;
 /// <summary>
 /// A .NET thread-safe singleton HttpClient for Telnyx
 /// </summary>
-public interface ITelnyxClientUtil : IDisposable, IAsyncDisposable
+public interface ITelnyxHttpClient : IDisposable, IAsyncDisposable
 {
     ValueTask<HttpClient> Get(CancellationToken cancellationToken = default);
 }

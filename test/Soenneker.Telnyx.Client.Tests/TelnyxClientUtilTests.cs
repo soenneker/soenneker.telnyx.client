@@ -7,11 +7,11 @@ namespace Soenneker.Telnyx.Client.Tests;
 [Collection("Collection")]
 public class TelnyxClientUtilTests : FixturedUnitTest
 {
-    private readonly ITelnyxClientUtil _util;
+    private readonly ITelnyxHttpClient _util;
 
     public TelnyxClientUtilTests(Fixture fixture, ITestOutputHelper output) : base(fixture, output)
     {
-        _util = Resolve<ITelnyxClientUtil>(true);
+        _util = Resolve<ITelnyxHttpClient>(true);
     }
 
     [Fact]
