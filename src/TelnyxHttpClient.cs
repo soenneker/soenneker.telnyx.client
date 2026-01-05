@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -16,7 +17,7 @@ public sealed class TelnyxHttpClient : ITelnyxHttpClient
     private readonly IConfiguration _configuration;
 
     private const string _clientId = nameof(TelnyxHttpClient);
-    private const string _prodBaseUrl = "https://api.telnyx.com/v2/";
+    private static readonly Uri _prodBaseUrl = new("https://api.telnyx.com/v2/", UriKind.Absolute);
 
     public TelnyxHttpClient(IHttpClientCache httpClientCache, IConfiguration configuration)
     {
@@ -26,13 +27,14 @@ public sealed class TelnyxHttpClient : ITelnyxHttpClient
 
     public ValueTask<HttpClient> Get(CancellationToken cancellationToken = default)
     {
-        return _httpClientCache.Get(_clientId, () =>
+        // No closure: state passed explicitly + static lambda
+        return _httpClientCache.Get(_clientId, (configuration: _configuration, prodBaseUrl: _prodBaseUrl), static state =>
         {
-            var token = _configuration.GetValueStrict<string>("Telnyx:Token");
+            var token = state.configuration.GetValueStrict<string>("Telnyx:Token");
 
             return new HttpClientOptions
             {
-                BaseAddress = _prodBaseUrl,
+                BaseAddress = state.prodBaseUrl,
                 DefaultRequestHeaders = new System.Collections.Generic.Dictionary<string, string>
                 {
                     { "Authorization", $"Bearer {token}" }
