@@ -1,20 +1,19 @@
-﻿using Soenneker.Telnyx.Client.Abstract;
-using Soenneker.Tests.FixturedUnit;
-using Xunit;
+using Soenneker.Telnyx.Client.Abstract;
+using Soenneker.Tests.HostedUnit;
 
 namespace Soenneker.Telnyx.Client.Tests;
 
-[Collection("Collection")]
-public class TelnyxClientUtilTests : FixturedUnitTest
+[ClassDataSource<Host>(Shared = SharedType.PerTestSession)]
+public class TelnyxClientUtilTests : HostedUnitTest
 {
     private readonly ITelnyxHttpClient _util;
 
-    public TelnyxClientUtilTests(Fixture fixture, ITestOutputHelper output) : base(fixture, output)
+    public TelnyxClientUtilTests(Host host) : base(host)
     {
         _util = Resolve<ITelnyxHttpClient>(true);
     }
 
-    [Fact]
+    [Test]
     public void Default()
     {
 
