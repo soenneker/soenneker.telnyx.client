@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,24 +38,24 @@ public sealed class TelnyxHttpClient : ITelnyxHttpClient
             var token = state.configuration.GetValueStrict<string>("Telnyx:Token");
             bool logging = state.configuration.GetValue<bool>("Telnyx:RequestResponseLogging");
 
-            HttpMessageHandler? pipeline = null;
+            List<Func<DelegatingHandler>>? handlerFactories = null;
 
             if (logging)
             {
-                pipeline = new HttpClientLoggingHandler(state.logger, new HttpClientLoggingOptions
-                {
-                    LogLevel = LogLevel.Debug,
-                    RedactedHeaders = ["Authorization"]
-                })
-                {
-                    InnerHandler = new HttpClientHandler()
-                };
+                handlerFactories =
+                [
+                    () => new HttpClientLoggingHandler(state.logger, new HttpClientLoggingOptions
+                    {
+                        LogLevel = LogLevel.Debug,
+                        RedactedHeaders = ["Authorization"]
+                    })
+                ];
             }
 
             return new HttpClientOptions
             {
                 BaseAddress = state.prodBaseUrl,
-                HttpMessageHandler = pipeline,
+                DelegatingHandlerFactories = handlerFactories,
                 DefaultRequestHeaders = new System.Collections.Generic.Dictionary<string, string>
                 {
                     { "Authorization", $"Bearer {token}" }
