@@ -13,14 +13,13 @@ using Soenneker.Utils.HttpClientCache.Abstract;
 
 namespace Soenneker.Telnyx.Client;
 
-/// <inheritdoc cref="ITelnyxHttpClient"/>
 public sealed class TelnyxHttpClient : ITelnyxHttpClient
 {
     private readonly IHttpClientCache _httpClientCache;
     private readonly IConfiguration _configuration;
     private readonly ILogger<TelnyxHttpClient> _logger;
 
-    private const string _clientId = nameof(TelnyxHttpClient);
+    private readonly string _clientId = $"{nameof(TelnyxHttpClient)}-{Guid.NewGuid():N}";
     private static readonly Uri _prodBaseUrl = new("https://api.telnyx.com/v2/", UriKind.Absolute);
 
     public TelnyxHttpClient(IHttpClientCache httpClientCache, IConfiguration configuration, ILogger<TelnyxHttpClient> logger)
@@ -64,18 +63,11 @@ public sealed class TelnyxHttpClient : ITelnyxHttpClient
         }, cancellationToken);
     }
 
-    /// <summary>
-    /// Releases resources used by the current instance.
-    /// </summary>
     public void Dispose()
     {
         _httpClientCache.RemoveSync(_clientId);
     }
 
-    /// <summary>
-    /// Asynchronously releases resources used by the current instance.
-    /// </summary>
-    /// <returns>A task that represents the asynchronous operation.</returns>
     public ValueTask DisposeAsync()
     {
         return _httpClientCache.Remove(_clientId);

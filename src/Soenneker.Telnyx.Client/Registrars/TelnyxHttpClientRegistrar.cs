@@ -6,7 +6,7 @@ using Soenneker.Utils.HttpClientCache.Registrar;
 namespace Soenneker.Telnyx.Client.Registrars;
 
 /// <summary>
-/// A .NET thread-safe singleton HttpClient for Telnyx
+/// Registers an authenticated HTTP client provider for Telnyx's REST API.
 /// </summary>
 public static class TelnyxHttpClientRegistrar
 {
