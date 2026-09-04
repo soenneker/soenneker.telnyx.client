@@ -13,6 +13,7 @@ using Soenneker.Utils.HttpClientCache.Abstract;
 
 namespace Soenneker.Telnyx.Client;
 
+/// <inheritdoc cref="ITelnyxHttpClient" />
 public sealed class TelnyxHttpClient : ITelnyxHttpClient
 {
     private readonly IHttpClientCache _httpClientCache;
