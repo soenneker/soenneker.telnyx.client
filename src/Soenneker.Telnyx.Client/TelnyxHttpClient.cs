@@ -35,7 +35,7 @@ public sealed class TelnyxHttpClient : ITelnyxHttpClient
         // No closure: state passed explicitly + static lambda
         return _httpClientCache.Get(_clientId, (configuration: _configuration, logger: _logger, prodBaseUrl: _prodBaseUrl), static state =>
         {
-            var token = state.configuration.GetValueStrict<string>("Telnyx:Token");
+            var token = state.configuration.GetStringStrict("Telnyx:Token");
             bool logging = state.configuration.GetValue<bool>("Telnyx:RequestResponseLogging");
 
             List<Func<DelegatingHandler>>? handlerFactories = null;
