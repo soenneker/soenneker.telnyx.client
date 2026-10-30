@@ -47,6 +47,9 @@ public sealed class TelnyxHttpClient : ITelnyxHttpClient
                     () => new HttpClientLoggingHandler(state.logger, new HttpClientLoggingOptions
                     {
                         LogLevel = LogLevel.Debug,
+                        LogRequestBody = true,
+                        LogResponseBody = true,
+                        LogQueryString = true,
                         RedactedHeaders = ["Authorization"]
                     })
                 ];
